@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link type="text/css" rel="stylesheet" href="/static/main.css" />
+  <title>Board Games Online</title>
+  <script type="text/javascript">
+    function forcepost(element){
+      element.submit();
+    }
+
+    function addEvent(evnt, elem, func) {
+       if (elem.addEventListener)  // W3C DOM
+          elem.addEventListener(evnt,func,false);
+       else if (elem.attachEvent) { // IE DOM
+          elem.attachEvent("on"+evnt, func);
+       }
+       else { // No much to do
+          elem[evnt] = func;
+       }
+    }
+  </script>
+</head>
+
+<body>
+  <a href="/" class="main-title">
+    Board Games Online
+  </a>
+
+  <div class="login-area">
+    {% if user %}
+      <a class="login-link" href="/friends">friends</a>
+      <a class="login-link" href="/groups">groups</a>
+      <a class="login-link" href="/user">{{user.name}}</a>
+      <a class="login-link" href="/logout">logout</a>
+    {% else %}
+      <a class="login-link" href="/login">login</a>    
+      <a class="login-link" href="/signup">signup</a>
+    {% endif %}
+  </div>
+
+  <div id="content">
+  {% block content %}
+  {% endblock %}
+  </div>
+
+<div style="position:fixed; bottom:30px; float:left; margin-left:-400px;">
+  <table>
+    <tr>
+      <td>
+        <img src="/images/ddg.png" alt="Advert" style="width:50px;height:50px;">
+      </td>
+      <td>
+        <marquee>Advertisements</marquee>
+      </td>
+    </tr>
+  </table>
+</div>
+
+</body>
+
+</html>
+
