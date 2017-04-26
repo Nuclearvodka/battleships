@@ -7,9 +7,9 @@
   .board {
     position: relative;
     top: 0;
-    left: 0;
-    width:800px;
-    height:800px;
+    left: -140;
+    width:1000px;
+    height:500px;
   }
   .image1 {
     position: absolute;
@@ -31,8 +31,8 @@
 {% block content %}
     <h2>Battleships</h2> 
     
-    <p><b>{{p1}}</b>  <span style="display:inline-block; 
-       margin-left: 200px;"><b>{{p2}}</b> </span></p>
+    <p><b>{{player1}}</b>  <span style="display:inline-block; 
+       margin-left: 200px;"><b>{{player2}}</b> </span></p>
 
      <form id="battleships" method="post"> 
       <table>
@@ -76,8 +76,7 @@
     <br>
     
     <div class="parent">
-      <img src="/images/BoardSnakes.png" alt="board" class="board">
-      <img src="/images/bit.png" alt="bit" class="image1">
-      <img src="/images/doge.png" alt="doge" class="image2">
+      <img src="/images/BSBoard.jpg" alt="board" class="board">
+      
     </div>
 {% endblock %}
