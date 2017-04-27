@@ -3,10 +3,6 @@ import re
 import random
 import hashlib
 import hmac
-import battlefield
-import bombfield
-import ship
-import sys
 
 from string import letters
 from operator import is_not
@@ -363,28 +359,18 @@ class UserStat(WebHandler):
 			User.logout(self.user)
 			
 #######################BATTLESHIPS##############################
-		
+			
 class Battleships(db.Model):
+	player1 = db.ReferenceProperty(User, collection_name = "Battleships_p1")
+	player2 = db.ReferenceProperty(User, collection_name = "Battleships_p2")
 
-		player1 = db.ReferenceProperty(User, collection_name = "Battleships_p1")
-		player2 = db.ReferenceProperty(User, collection_name = "Battleships_p2")
-
-		cpu = db.BooleanProperty() #BOT FUNCTION no bot yet 
-		p1_turn = db.BooleanProperty()
-		state = db.IntegerProperty()
+	cpu = db.BooleanProperty() #BOT FUNCTION no bot yet 
+	p1_turn = db.BooleanProperty()
+	state = db.IntegerProperty()
 	
-		rec_next = db.StringProperty()
-		msg = db.StringProperty()
-
-		nth = {
-				1: "first",
-				2: "second",
-				3: "third",
-				4: "fourth",
-				5: "fifth"
-			}
-
-		rowlist = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]	
+	
+	rec_next = db.StringProperty()
+	msg = db.StringProperty()
 	
 class BattleshipsMenu(WebHandler):
 
@@ -430,8 +416,7 @@ class BattleshipsGame(WebHandler):
 		ld = 79.44444444 * (9 if int(num%10)==0 else int(num%10)-1)
 		ld = (715 - ld) if int((num-1)/10)%2 == 1 else ld
 		return 5+ld
-		
-	
+
 	def get(self, session_id):
 	
 		if self.user:
@@ -471,40 +456,49 @@ class BattleshipsGame(WebHandler):
 			self.redirect("/login")
 	
 	######################################################################################
-	
-
-	def post(self, session_id ):
-	
+	def post(self, session_id):
+			
+			
 			def clear(self):
 				os.system('tput reset') #clears the terminal window, does not just add new lines but deletes whats been written
+			
+			#def Ship(self, size):
+			#	
+				#db.state = 10
+				#db.put()
 				
-			def Start(self,db,):	
+			def Start(self,db,):
+				
 				### CREATE PLAYER VARIABLES ###
 				print"CREATE"
 				self.p1 = ""
 				self.p2 = ""
-				
+
 				### CREATE BATTLEFIELDS ###
 				self.p1Field = battlefield.Battlefield()
 				self.p2Field = battlefield.Battlefield()
 				self.p1BombField = bombfield.Bombfield()
 				self.p2BombField = bombfield.Bombfield()
-				
+
 
 				### CREATE SHIPS ###
-			
+				
+				#print"SHIPS"
+				#self.parts = []
+				#for x in range(size):
+				#	self.parts.append(True)	
+				
 				self.ships = [];
 				'''self.ships.append(ship.Ship(5))
 				self.ships.append(ship.Ship(4))'''
 				self.ships.append(ship.Ship(3))
 				self.ships.append(ship.Ship(3))
 				self.ships.append(ship.Ship(2))
-				
-				#print"TESTING SHIPS 1" , self.ships ,"\n\n"
-				
+
 				db.state = 1 
 				db.put()
-				
+			
+			
 			def columnExist(self, column):
 				if("A" <= column <= "J"): #is the column A-J?
 					return True
@@ -528,26 +522,20 @@ class BattleshipsGame(WebHandler):
 
 				return text
 			
-			def placeShips(self  , db):
+			def placeShips(self, player , db):
 				counter = 1
-				#x = 0 
+				
 				### PLAYER INSTRUCTIONS ###
-				db.msg = "" 
-				player = self.user.name
-				print"PlaceShips FIRST TEST" , player, "\n\n"				
-				#db.msg = " You have 10x10 cells where you can place your ships ,say which direction the ship is turned (right, left, up or down)"
+				
+				db.msg = " You have 10x10 cells where you can place your ships ,say which direction the ship is turned (right, left, up or down)"
 				#print player.name + ", you have 10x10 cells where you can place your ships,\n"
 				#print "Remember not to tell your opponent where you place your ships\n"
 				#print "Then you say which direction the ship is turned (right, left, up or down)\n"
 
-				#print(self.printfield(player.field.field)) #prints the player's field 
+				#print(self.printfield(player.field.field)) #prints the player's field
 
 				### PLACE SHIPS ###
-				#if x < 5 :
 				for x in player.ships:
-					#x = x + 1 
-					print"placeships SECOND TEST"
-					db.msg = ' You have 10x10 cells where you can place your ships ,say which direction the ship is turned (right, left, up or down)'
 					column = ""
 					row = ""
 					direction = ""
@@ -685,14 +673,12 @@ class BattleshipsGame(WebHandler):
 					
 						if battleships.state == 0:
 							print "\n\nP1:WUBBA LUBBA DUB DUB\n[",self.user.name,"]\n[1]:\t", battleships.msg,"\n[wait]:\t", waiting,"\n[S]:\t", battleships.state,"\n\n"
-							#placeShips(self , battleships )
 							Start(self,battleships)
 							self.redirect('/battleshipsgame/%s' % str(battleships.key().id()))
 							
-						elif battleships.state == 1:
+						elif battleships.state == 10:
 							print "\n\nP1:WUBBA LUBBA DUB DUB\n[",self.user.name,"]\n[1]:\t", battleships.msg,"\n[wait]:\t", waiting,"\n[S]:\t", battleships.state,"\n\n"
-							#print"TESTING SHIPS 2" , self.ships ,"\n\n"
-							placeShips(self , battleships )
+							placeShips(self ,player , battleships )
 							self.redirect('/battleshipsgame/%s' % str(battleships.key().id()))
 						
 						#elif battleships.state == 1:

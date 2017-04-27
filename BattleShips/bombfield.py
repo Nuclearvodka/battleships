@@ -1,6 +1,5 @@
 class Bombfield:
 	def __init__(self):
-		print"bombfield INIT TEST"
 		self.field = {}
 		cellNumber = 10 
 		for code in range(ord('A'), ord('K')):

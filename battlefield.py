@@ -1,5 +1,6 @@
 class Battlefield:
 	def __init__(self):
+		print"BattleField INIT TEST"
 		self.field = {}
 		cellNumber = 10 
 		for code in range(ord('A'), ord('K')):
